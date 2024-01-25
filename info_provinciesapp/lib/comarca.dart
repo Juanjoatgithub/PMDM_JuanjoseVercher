@@ -19,15 +19,18 @@ class Comarca {
     this.provincia,
   });
 
-  Comarca.fromJSON(Map<String, dynamic>? json)
-      : comarca = json?['comarca'] ?? 'Información no disponible',
-        capital = json?['capital'] ?? 'Información no disponible',
-        poblacio = json?['poblacio'] ?? 'Información no disponible',
-        img = json?['img'] ?? 'https://via.placeholder.com/150',
-        desc = json?['desc'] ?? 'Información no disponible',
-        latitud = json?['latitud']?.toDouble() ?? 0.0,
-        longitud = json?['longitud']?.toDouble() ?? 0.0,
-        provincia = json?['provincia'];
+  factory Comarca.fromJSON(Map<String, dynamic> json) {
+    return Comarca(
+      comarca: json['comarca'] ?? 'Información no disponible',
+      capital: json['capital'],
+      poblacio: json['poblacio'],
+      img: json['img'],
+      desc: json['desc'],
+      latitud: json['latitud']?.toDouble(),
+      longitud: json['longitud']?.toDouble(),
+      provincia: json['provincia'],
+    );
+  }
 
   ProvinciaInfo toProvinciaInfo() {
     return ProvinciaInfo(nom: provincia ?? "", img: img ?? "");

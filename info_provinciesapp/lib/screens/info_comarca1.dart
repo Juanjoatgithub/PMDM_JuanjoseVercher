@@ -1,21 +1,19 @@
 import 'package:flutter/material.dart';
 import 'info_comarca2.dart';
+import 'package:info_provinciesapp/comarca.dart';
+// ignore: unused_import
+import 'package:info_provinciesapp/peticions_http.dart';
 
 class InfoComarca1 extends StatelessWidget {
-  final Map<String, dynamic> comarca;
+  final Comarca comarca;
 
   InfoComarca1({required this.comarca});
 
   @override
   Widget build(BuildContext context) {
-    var coordlongitud = comarca['longitud'];
-    var coordlatitud = comarca['latitud'];
-    double? latitud = coordlatitud != null ? comarca['latitud'] : null;
-    double? longitud = coordlongitud != null ? comarca['longitud'] : null;
-
     return Scaffold(
       appBar: AppBar(
-        title: Text('Información de la Comarca'),
+        title: Text('Informacio de la Comarca'),
       ),
       body: Container(
         decoration: BoxDecoration(
@@ -36,7 +34,7 @@ class InfoComarca1 extends StatelessWidget {
                     ClipRRect(
                       borderRadius: BorderRadius.circular(8.0),
                       child: Image.network(
-                        comarca['img'],
+                        comarca.img ?? '',
                         height: 200,
                         fit: BoxFit.cover,
                       ),
@@ -49,7 +47,7 @@ class InfoComarca1 extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: [
                           Text(
-                            comarca['comarca'],
+                            comarca.comarca,
                             style: TextStyle(
                               fontSize: 24,
                               fontWeight: FontWeight.bold,
@@ -64,7 +62,7 @@ class InfoComarca1 extends StatelessWidget {
                               SizedBox(width: 8.0),
                               Expanded(
                                 child: Text(
-                                  'Capital: ${comarca['capital'] ?? 'No disponible'}',
+                                  'Capital: ${comarca.capital ?? 'No disponible'}',
                                   style: TextStyle(
                                     fontSize: 18,
                                     color: Colors.black,
@@ -79,7 +77,7 @@ class InfoComarca1 extends StatelessWidget {
                               SizedBox(width: 8.0),
                               Expanded(
                                 child: Text(
-                                  'Población: ${comarca['poblacio'] ?? 'No disponible'}',
+                                  'Poblacio: ${comarca.poblacio ?? 'No disponible'}',
                                   style: TextStyle(
                                     fontSize: 18,
                                     color: Colors.black,
@@ -94,7 +92,7 @@ class InfoComarca1 extends StatelessWidget {
                               SizedBox(width: 8.0),
                               Expanded(
                                 child: Text(
-                                  'Descripción: ${comarca['desc'] ?? 'No disponible'}',
+                                  'Descripcio: ${comarca.desc ?? 'No disponible'}',
                                   style: TextStyle(
                                     fontSize: 18,
                                     color: Colors.black,
@@ -104,14 +102,15 @@ class InfoComarca1 extends StatelessWidget {
                             ],
                           ),
                           SizedBox(height: 8.0),
-                          if (latitud != null && longitud != null)
+                          if (comarca.latitud != null &&
+                              comarca.longitud != null)
                             Row(
                               children: [
                                 Icon(Icons.map, color: Colors.black),
                                 SizedBox(width: 8.0),
                                 Expanded(
                                   child: Text(
-                                    'Coordenadas: Latitud $latitud, Longitud $longitud',
+                                    'Coordenades: Latitud ${comarca.latitud}, Longitud ${comarca.longitud}',
                                     style: TextStyle(
                                       fontSize: 18,
                                       color: Colors.black,
@@ -120,7 +119,8 @@ class InfoComarca1 extends StatelessWidget {
                                 ),
                               ],
                             ),
-                          if (latitud == null || longitud == null)
+                          if (comarca.latitud == null ||
+                              comarca.longitud == null)
                             Row(
                               children: [
                                 Icon(Icons.map, color: Colors.black),

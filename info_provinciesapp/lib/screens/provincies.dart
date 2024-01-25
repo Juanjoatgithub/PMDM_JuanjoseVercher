@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:info_provinciesapp/data/comarques.dart';
+import 'package:info_provinciesapp/peticions_http.dart'; // Asegúrate de que la ruta sea correcta
 import 'package:info_provinciesapp/screens/comarques_screen.dart';
-// Asegúrate de que la ruta sea correcta
 
 class ProvinciesScreen extends StatelessWidget {
   @override
@@ -17,26 +16,46 @@ class ProvinciesScreen extends StatelessWidget {
             fit: BoxFit.cover,
           ),
         ),
-        child: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              for (var provincia in provincies)
-                CircularImageTile(
-                  provincia: provincia,
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => ComarquesScreen(
-                          provincia: provincia,
-                        ),
+        child: FutureBuilder<List<dynamic>>(
+          future: PeticionsHTTP.obtenirProvincies(),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return Center(
+                child: CircularProgressIndicator(),
+              );
+            } else if (snapshot.hasError) {
+              return Center(
+                child: Text('Error al cargar las provincias'),
+              );
+            } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+              return Center(
+                child: Text('No se encontraron provincias'),
+              );
+            } else {
+              List<dynamic> provincies = snapshot.data!;
+              return Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    for (var provincia in provincies)
+                      CircularImageTile(
+                        provincia: provincia,
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => ComarquesScreen(
+                                provincia: provincia,
+                              ),
+                            ),
+                          );
+                        },
                       ),
-                    );
-                  },
+                  ],
                 ),
-            ],
-          ),
+              );
+            }
+          },
         ),
       ),
     );
